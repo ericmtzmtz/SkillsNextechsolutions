@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pi — AI Coding Agent Harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Type scale */
+    --fs-xs:  0.75rem;   /* 12px */
+    --fs-sm:  0.875rem;  /* 14px */
+    --fs-base: 1rem;     /* 16px */
+    --fs-lg:  1.125rem;  /* 18px */
+    --fs-xl:  1.25rem;   /* 20px */
+    --fs-2xl: 1.5rem;    /* 24px */
+    --fs-3xl: 1.875rem;  /* 30px */
+    --fs-4xl: 2.25rem;   /* 36px */
+    --fs-5xl: 3rem;      /* 48px */
+    --fs-6xl: 3.75rem;   /* 60px */
+
+    /* Spacing (base 16px) */
+    --sp-1:  0.25rem;  /* 4px */
+    --sp-2:  0.5rem;   /* 8px */
+    --sp-3:  0.75rem;  /* 12px */
+    --sp-4:  1rem;     /* 16px */
+    --sp-6:  1.5rem;   /* 24px */
+    --sp-8:  2rem;     /* 32px */
+    --sp-12: 3rem;     /* 48px */
+    --sp-16: 4rem;     /* 64px */
+    --sp-24: 6rem;     /* 96px */
+    --sp-32: 8rem;     /* 128px */
+
+    /* Colors — Blue-tech palette (HSL) */
+    --primary-50:  hsl(225, 100%, 97%);
+    --primary-100: hsl(225, 90%, 92%);
+    --primary-200: hsl(225, 85%, 82%);
+    --primary-300: hsl(225, 80%, 68%);
+    --primary-400: hsl(225, 80%, 58%);
+    --primary-500: hsl(225, 85%, 48%);
+    --primary-600: hsl(225, 85%, 38%);
+    --primary-700: hsl(225, 85%, 28%);
+    --primary-800: hsl(225, 80%, 18%);
+    --primary-900: hsl(225, 80%, 10%);
+
+    /* Accent — purple */
+    --accent-400: hsl(265, 75%, 58%);
+    --accent-500: hsl(265, 78%, 48%);
+
+    /* Grays — blue tint */
+    --gray-50:  hsl(220, 25%, 98%);
+    --gray-100: hsl(220, 15%, 94%);
+    --gray-200: hsl(220, 12%, 88%);
+    --gray-300: hsl(220, 10%, 72%);
+    --gray-400: hsl(220, 8%, 58%);
+    --gray-500: hsl(220, 8%, 45%);
+    --gray-600: hsl(220, 10%, 32%);
+    --gray-700: hsl(220, 12%, 22%);
+    --gray-800: hsl(220, 15%, 14%);
+    --gray-900: hsl(220, 18%, 8%);
+
+    /* Semantic */
+    --success-500: hsl(150, 75%, 40%);
+    --success-100: hsl(150, 60%, 92%);
+
+    /* Shadows */
+    --shadow-xs: 0 1px 2px 0 rgba(0,0,0,0.05);
+    --shadow-sm: 0 1px 3px 0 rgba(0,0,0,0.08), 0 1px 2px -1px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.04);
+    --shadow-glow: 0 0 40px -10px hsla(225, 85%, 48%, 0.3);
+
+    /* Radius */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: var(--fs-base);
+    line-height: 1.6;
+    color: var(--gray-700);
+    background: var(--gray-50);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ── Nav ──────────────────────────── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: hsla(220, 25%, 98%, 0.8);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .nav-inner {
+    max-width: 1200px; margin: 0 auto;
+    padding: var(--sp-4) var(--sp-8);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-weight: 700; font-size: var(--fs-xl);
+    color: var(--gray-900);
+    display: flex; align-items: center; gap: var(--sp-2);
+  }
+  .nav-logo-icon {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--primary-500), var(--accent-500));
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: var(--fs-lg); font-weight: 700;
+  }
+  .nav-links { display: flex; gap: var(--sp-8); align-items: center; }
+  .nav-links a {
+    text-decoration: none; color: var(--gray-500);
+    font-size: var(--fs-sm); font-weight: 500;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--gray-900); }
+  .nav-cta {
+    background: var(--primary-500); color: #fff;
+    padding: var(--sp-2) var(--sp-4);
+    border-radius: var(--radius-md);
+    font-weight: 600; font-size: var(--fs-sm);
+    text-decoration: none;
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+  .nav-cta:hover {
+    background: var(--primary-600);
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* ── Hero ─────────────────────────── */
+  .hero {
+    padding: var(--sp-32) var(--sp-8) var(--sp-24);
+    text-align: center;
+    max-width: 800px; margin: 0 auto;
+    position: relative;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: var(--sp-2);
+    background: var(--primary-50); color: var(--primary-600);
+    font-size: var(--fs-xs); font-weight: 600;
+    padding: var(--sp-1) var(--sp-3);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--primary-100);
+    margin-bottom: var(--sp-8);
+    letter-spacing: 0.05em;
+  }
+  .hero-badge-dot {
+    width: 6px; height: 6px;
+    background: var(--success-500);
+    border-radius: 50%;
+  }
+  h1 {
+    font-size: var(--fs-6xl); font-weight: 700;
+    color: var(--gray-900);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--sp-6);
+  }
+  h1 span {
+    background: linear-gradient(135deg, var(--primary-500), var(--accent-500));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: var(--fs-xl);
+    color: var(--gray-500);
+    max-width: 580px; margin: 0 auto var(--sp-8);
+    line-height: 1.6;
+  }
+  .hero-actions {
+    display: flex; gap: var(--sp-4); justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary, .btn-secondary {
+    padding: var(--sp-3) var(--sp-8);
+    border-radius: var(--radius-md);
+    font-weight: 600; font-size: var(--fs-base);
+    text-decoration: none;
+    transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: var(--sp-2);
+  }
+  .btn-primary {
+    background: var(--primary-500); color: #fff;
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-primary:hover {
+    background: var(--primary-600);
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+    transform: translateY(-1px);
+  }
+  .btn-secondary {
+    background: #fff; color: var(--gray-700);
+    border: 1px solid var(--gray-200);
+  }
+  .btn-secondary:hover {
+    border-color: var(--gray-300);
+    background: var(--gray-50);
+  }
+
+  /* ── Terminal preview ─────────────── */
+  .terminal-section {
+    max-width: 880px; margin: 0 auto var(--sp-24);
+    padding: 0 var(--sp-8);
+  }
+  .terminal {
+    background: var(--gray-900);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
+  }
+  .terminal-bar {
+    background: var(--gray-800);
+    padding: var(--sp-3) var(--sp-4);
+    display: flex; align-items: center; gap: var(--sp-2);
+    border-bottom: 1px solid hsl(220, 15%, 20%);
+  }
+  .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .terminal-dot:nth-child(1) { background: hsl(0, 70%, 55%); }
+  .terminal-dot:nth-child(2) { background: hsl(45, 80%, 50%); }
+  .terminal-dot:nth-child(3) { background: hsl(150, 55%, 45%); }
+  .terminal-title {
+    margin-left: var(--sp-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: var(--fs-xs); color: var(--gray-400);
+  }
+  .terminal-body {
+    padding: var(--sp-6) var(--sp-6);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: var(--fs-sm); line-height: 1.7;
+    color: var(--gray-200);
+    overflow-x: auto;
+  }
+  .t-prompt { color: var(--primary-400); }
+  .t-command { color: var(--gray-100); }
+  .t-string { color: var(--success-500); }
+  .t-dim { color: var(--gray-500); }
+  .t-highlight { color: var(--accent-400); }
+  .t-cursor {
+    display: inline-block; width: 8px; height: 18px;
+    background: var(--primary-400);
+    animation: blink 1s step-end infinite;
+    vertical-align: text-bottom; margin-left: 2px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ── Section ──────────────────────── */
+  .section { padding: var(--sp-24) var(--sp-8); }
+  .section-label {
+    font-size: var(--fs-xs); font-weight: 600;
+    color: var(--primary-500);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: var(--sp-3);
+    display: block; text-align: center;
+  }
+  .section-title {
+    font-size: var(--fs-5xl); font-weight: 700;
+    color: var(--gray-900);
+    text-align: center;
+    line-height: 1.15; letter-spacing: -0.01em;
+    margin-bottom: var(--sp-4);
+    max-width: 700px; margin-left: auto; margin-right: auto;
+  }
+  .section-sub {
+    font-size: var(--fs-lg);
+    color: var(--gray-500);
+    text-align: center;
+    max-width: 560px; margin: 0 auto var(--sp-16);
+  }
+
+  /* ── Features grid ────────────────── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-8);
+    max-width: 1080px; margin: 0 auto;
+  }
+  .feature-card {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-8);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .feature-card:hover {
+    border-color: var(--primary-200);
+    box-shadow: var(--shadow-lg);
+  }
+  .feature-icon {
+    width: 44px; height: 44px;
+    background: var(--primary-50);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: var(--fs-xl); margin-bottom: var(--sp-4);
+  }
+  .feature-card h3 {
+    font-size: var(--fs-lg); font-weight: 600;
+    color: var(--gray-900); margin-bottom: var(--sp-2);
+  }
+  .feature-card p {
+    font-size: var(--fs-sm); color: var(--gray-500);
+    line-height: 1.6;
+  }
+
+  /* ── How it works ─────────────────── */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-8);
+    max-width: 1000px; margin: 0 auto;
+    text-align: center;
+  }
+  .step-num {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--primary-500), var(--accent-500));
+    color: #fff; font-weight: 700; font-size: var(--fs-xl);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto var(--sp-4);
+  }
+  .step h3 {
+    font-size: var(--fs-lg); font-weight: 600;
+    color: var(--gray-900); margin-bottom: var(--sp-2);
+  }
+  .step p {
+    font-size: var(--fs-sm); color: var(--gray-500);
+    line-height: 1.6;
+  }
+
+  /* ── Capabilities ─────────────────── */
+  .capabilities {
+    max-width: 1000px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-4);
+  }
+  .cap-item {
+    display: flex; align-items: flex-start; gap: var(--sp-4);
+    padding: var(--sp-4) var(--sp-6);
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+  }
+  .cap-check {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    background: var(--success-100);
+    color: var(--success-500);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: var(--fs-xs);
+    margin-top: 2px;
+  }
+  .cap-item h4 {
+    font-size: var(--fs-sm); font-weight: 600;
+    color: var(--gray-800); margin-bottom: 2px;
+  }
+  .cap-item p {
+    font-size: var(--fs-xs); color: var(--gray-500);
+    line-height: 1.5;
+  }
+
+  /* ── CTA ──────────────────────────── */
+  .cta-section {
+    text-align: center;
+    padding: var(--sp-32) var(--sp-8);
+    background: var(--gray-900);
+    border-radius: var(--radius-xl);
+    max-width: 1000px; margin: 0 auto;
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; top: -50%; left: -20%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, hsla(225, 85%, 48%, 0.15), transparent 70%);
+    border-radius: 50%;
+  }
+  .cta-section::after {
+    content: '';
+    position: absolute; bottom: -50%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, hsla(265, 78%, 48%, 0.12), transparent 70%);
+    border-radius: 50%;
+  }
+  .cta-content { position: relative; z-index: 1; }
+  .cta-title {
+    font-size: var(--fs-5xl); font-weight: 700;
+    color: #fff; line-height: 1.15; letter-spacing: -0.01em;
+    margin-bottom: var(--sp-4);
+  }
+  .cta-sub {
+    font-size: var(--fs-lg);
+    color: var(--gray-400);
+    max-width: 520px; margin: 0 auto var(--sp-8);
+  }
+  .cta-buttons { display: flex; gap: var(--sp-4); justify-content: center; flex-wrap: wrap; }
+  .cta-buttons .btn-primary {
+    padding: var(--sp-4) var(--sp-8);
+    font-size: var(--fs-base);
+  }
+  .cta-buttons .btn-secondary {
+    background: transparent; color: var(--gray-200);
+    border-color: var(--gray-600);
+  }
+  .cta-buttons .btn-secondary:hover {
+    background: hsla(0,0%,100%,0.05);
+    border-color: var(--gray-400);
+  }
+
+  /* ── Footer ───────────────────────── */
+  .footer {
+    max-width: 1100px; margin: 0 auto;
+    padding: var(--sp-16) var(--sp-8) var(--sp-8);
+    display: flex; justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--gray-200);
+    margin-top: var(--sp-24);
+  }
+  .footer-left { display: flex; gap: var(--sp-6); align-items: center; }
+  .footer-logo {
+    font-weight: 700; font-size: var(--fs-base);
+    color: var(--gray-700);
+  }
+  .footer-links { display: flex; gap: var(--sp-6); }
+  .footer-links a {
+    font-size: var(--fs-sm); color: var(--gray-400);
+    text-decoration: none;
+  }
+  .footer-links a:hover { color: var(--gray-600); }
+  .footer-copy {
+    font-size: var(--fs-xs); color: var(--gray-400);
+  }
+
+  /* ── Responsive ───────────────────── */
+  @media (max-width: 768px) {
+    h1 { font-size: var(--fs-4xl); }
+    .features-grid,
+    .steps { grid-template-columns: 1fr; }
+    .capabilities { grid-template-columns: 1fr; }
+    .hero { padding-top: var(--sp-24); }
+    .section-title { font-size: var(--fs-3xl); }
+    .cta-title { font-size: var(--fs-3xl); }
+    .cta-section { margin: 0 var(--sp-4); }
+    .footer { flex-direction: column; gap: var(--sp-4); text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">π</div>
+      Pi Agent
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#docs">Docs</a>
+      <a href="#github">GitHub</a>
+      <a href="#start" class="nav-cta">Get started →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    v2.3 now available
+  </div>
+  <h1>
+    Your <span>AI coding agent</span><br>inside the terminal
+  </h1>
+  <p class="hero-sub">
+    Pi reads your files, runs commands, edits code, and writes new files — all from a single harness. No context switching. No friction.
+  </p>
+  <div class="hero-actions">
+    <a href="#start" class="btn-primary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      npm install -g pi
+    </a>
+    <a href="#docs" class="btn-secondary">
+      Read the docs →
+    </a>
+  </div>
+</section>
+
+<!-- Terminal -->
+<div class="terminal-section">
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="terminal-dot"></div>
+      <div class="terminal-dot"></div>
+      <div class="terminal-dot"></div>
+      <span class="terminal-title">pi — coding agent</span>
+    </div>
+    <div class="terminal-body">
+      <span class="t-dim">~/projects/my-app $</span> <span class="t-command">pi</span><br><br>
+      <span class="t-prompt">pi></span> Add rate limiting to the auth API<br>
+      <span class="t-dim">│</span> <span class="t-highlight">Reading</span> <span class="t-string">src/auth/routes.ts</span><br>
+      <span class="t-dim">│</span> <span class="t-highlight">Reading</span> <span class="t-string">package.json</span><br>
+      <span class="t-dim">│</span> <span class="t-highlight">Executing</span> npm list express-rate-limit<br>
+      <span class="t-dim">│</span> Express-rate-limit not found. Installing...<br>
+      <span class="t-dim">│</span> <span class="t-highlight">Editing</span> <span class="t-string">src/auth/routes.ts</span> — added middleware<br>
+      <span class="t-dim">│</span> <span class="t-highlight">Editing</span> <span class="t-string">src/config/limits.ts</span> — 100 req/15min<br>
+      <span class="t-dim">│</span> <span class="t-success" style="color: hsl(150,65%,48%)">✓</span> Done. Rate limiting active on <span class="t-string">/api/auth/*</span><br><br>
+      <span class="t-prompt">pi></span> <span class="t-cursor"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Features -->
+<section class="section" id="features">
+  <span class="section-label">Capabilities</span>
+  <h2 class="section-title">Everything you need to ship faster</h2>
+  <p class="section-sub">One harness. Four tools. Zero context switching between your code and your agent.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📖</div>
+      <h3>Read any file</h3>
+      <p>Pi reads your source code, configs, images — supports text files and screenshots. Truncated output for large files with smart offset navigation.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Run commands</h3>
+      <p>Execute shell commands directly — ls, grep, find, npm, git. Timeout-safe with output streaming. No more copy-paste between windows.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">✏️</div>
+      <h3>Edit with precision</h3>
+      <p>Targeted text replacements with exact matching. Multiple edits in one call. No diff fuzz. No accidental overwrites. Surgical code changes.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📝</div>
+      <h3>Write new files</h3>
+      <p>Create or overwrite files instantly. Auto-creates parent directories. Perfect for scaffolding, configs, and new components.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🧩</div>
+      <h3>Extensible with skills</h3>
+      <p>Custom skills, themes, extensions, and SDK integrations. Build your own tools on top of Pi. Tweak the TUI, keybindings, and prompts.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Runs where you work</h3>
+      <p>Native terminal application. Works locally. Your code never leaves your machine unless you choose to. Full control over providers and models.</p>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="section" id="how">
+  <span class="section-label">Workflow</span>
+  <h2 class="section-title">Three steps to AI-assisted coding</h2>
+  <p class="section-sub">No setup wizards. No configuration files. Just install and start building.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Install Pi</h3>
+      <p>One npm command. Global install. Works with your existing terminal and editor. Zero config to start.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Describe your task</h3>
+      <p>Talk to Pi in natural language. It reads your codebase, understands context, and plans the work.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Review and ship</h3>
+      <p>Pi executes — reading files, running commands, editing code. You review every change. Full visibility, full control.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Capabilities detail -->
+<section class="section">
+  <span class="section-label">Tooling</span>
+  <h2 class="section-title">Built for real engineering work</h2>
+  <p class="section-sub">Pi understands your entire project — not just one file at a time.</p>
+  <div class="capabilities">
+    <div class="cap-item">
+      <div class="cap-check">✓</div>
+      <div>
+        <h4>Reads images and screenshots</h4>
+        <p>Share screenshots of designs, errors, or diagrams. Pi processes them as context.</p>
+      </div>
+    </div>
+    <div class="cap-item">
+      <div class="cap-check">✓</div>
+      <div>
+        <h4>Smart file truncation</h4>
+        <p>Large files auto-truncated at 2000 lines. Navigate with offset/limit. Never hit token limits blind.</p>
+      </div>
+    </div>
+    <div class="cap-item">
+      <div class="cap-check">✓</div>
+      <div>
+        <h4>Batched edits</h4>
+        <p>Multiple disjoint changes in a single file — one call. No overlapping edits. Merge nearby changes automatically.</p>
+      </div>
+    </div>
+    <div class="cap-item">
+      <div class="cap-check">✓</div>
+      <div>
+        <h4>Timeout-safe commands</h4>
+        <p>Long-running commands protected. Optional timeouts. Truncated output saved to temp files for review.</p>
+      </div>
+    </div>
+    <div class="cap-item">
+      <div class="cap-check">✓</div>
+      <div>
+        <h4>Conventional Commits</h4>
+        <p>Ultra-compressed commit messages with caveman mode. Subject ≤50 chars. Body only when "why" isn't obvious.</p>
+      </div>
+    </div>
+    <div class="cap-item">
+      <div class="cap-check">✓</div>
+      <div>
+        <h4>Custom providers & models</h4>
+        <p>Bring your own API keys. Swap models. Add custom providers. Full flexibility over your AI backend.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="cta-section">
+    <div class="cta-content">
+      <h2 class="cta-title">Start building with Pi today</h2>
+      <p class="cta-sub">Free and open source. Install in seconds. Works with any codebase. Your terminal just got smarter.</p>
+      <div class="cta-buttons">
+        <a href="#start" class="btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          npm install -g pi
+        </a>
+        <a href="#github" class="btn-secondary">
+          View on GitHub →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-left">
+    <span class="footer-logo">Pi Agent</span>
+    <div class="footer-links">
+      <a href="#docs">Documentation</a>
+      <a href="#github">GitHub</a>
+      <a href="#discord">Discord</a>
+      <a href="#blog">Blog</a>
+    </div>
+  </div>
+  <span class="footer-copy">© 2026 Mario Zechner. MIT License.</span>
+</footer>
+
+</body>
+</html>
