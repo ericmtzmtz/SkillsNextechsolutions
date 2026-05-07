@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills Nexus — Open Agent Skills</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --hue: 220;
+      --primary-50:  hsl(220, 70%, 97%);
+      --primary-100: hsl(220, 65%, 93%);
+      --primary-300: hsl(220, 60%, 65%);
+      --primary-500: hsl(220, 70%, 52%);
+      --primary-600: hsl(220, 75%, 42%);
+      --primary-700: hsl(220, 80%, 32%);
+      --primary-900: hsl(220, 85%, 15%);
+
+      --gray-50:  hsl(220, 15%, 98%);
+      --gray-100: hsl(220, 12%, 94%);
+      --gray-200: hsl(220, 10%, 88%);
+      --gray-300: hsl(220, 8%, 70%);
+      --gray-400: hsl(220, 6%, 55%);
+      --gray-500: hsl(220, 5%, 42%);
+      --gray-600: hsl(220, 8%, 32%);
+      --gray-700: hsl(220, 10%, 22%);
+      --gray-800: hsl(220, 12%, 14%);
+      --gray-900: hsl(220, 15%, 8%);
+
+      --success-500: hsl(150, 60%, 44%);
+      --success-100: hsl(150, 50%, 90%);
+
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --radius-xl: 12px;
+
+      --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px rgba(0,0,0,0.04);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--gray-700);
+      background: var(--gray-50);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .hero {
+      padding: 96px 0 64px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--primary-600);
+      background: var(--primary-50);
+      border: 1px solid var(--primary-100);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--gray-900);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 span {
+      color: var(--primary-500);
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--gray-500);
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      margin-top: 32px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s, box-shadow 0.15s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary-500);
+      color: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-600);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--gray-700);
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn-secondary:hover {
+      background: var(--gray-50);
+      border-color: var(--gray-300);
+    }
+
+    .section {
+      padding: 64px 0;
+    }
+
+    .section-header {
+      margin-bottom: 32px;
+    }
+
+    .section-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+    }
+
+    .section-header p {
+      font-size: 16px;
+      color: var(--gray-400);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+    }
+
+    .skill-card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .skill-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--gray-300);
+    }
+
+    .skill-card-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--primary-50);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .skill-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-bottom: 8px;
+    }
+
+    .skill-card .skill-desc {
+      font-size: 14px;
+      color: var(--gray-400);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .skill-tag {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--gray-500);
+      background: var(--gray-100);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+    }
+
+    .skill-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .skill-card-footer .install {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-600);
+      text-decoration: none;
+    }
+
+    .skill-card-footer .install:hover {
+      color: var(--primary-700);
+    }
+
+    .skill-card-footer .badge {
+      font-size: 12px;
+      color: var(--success-500);
+      background: var(--success-100);
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    .install-section {
+      background: var(--gray-900);
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      color: #fff;
+    }
+
+    .install-section h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .install-section p {
+      font-size: 16px;
+      color: var(--gray-300);
+      margin-bottom: 24px;
+    }
+
+    .code-block {
+      background: hsl(220, 15%, 10%);
+      border: 1px solid hsl(220, 10%, 22%);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: auto;
+      color: var(--gray-200);
+    }
+
+    .code-block .cmd {
+      color: var(--primary-300);
+    }
+
+    .code-block .arg {
+      color: var(--gray-300);
+    }
+
+    .footer {
+      border-top: 1px solid var(--gray-200);
+      padding: 32px 0;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: var(--gray-400);
+    }
+
+    .footer a {
+      color: var(--gray-500);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer a:hover {
+      color: var(--primary-500);
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--gray-200);
+      margin: 0;
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        padding: 64px 0 48px;
+      }
+
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .install-section {
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero container">
+    <div class="hero-badge">Open Agent Skills</div>
+    <h1>Skills <span>Nexus</span></h1>
+    <p>Colección de skills modulares para agentes de código. Principios prácticos, diseño inteligente y workflows optimizados para desarrollo de software.</p>
+    <div class="hero-actions">
+      <a href="#skills" class="btn btn-primary">Explorar skills</a>
+      <a href="https://skills.sh/" class="btn btn-secondary" target="_blank" rel="noopener">Skills.sh →</a>
+    </div>
+  </header>
+
+  <hr class="divider">
+
+  <section class="section container" id="skills">
+    <div class="section-header">
+      <h2>Skills disponibles</h2>
+      <p>Skills instalables vía npx skills add</p>
+    </div>
+    <div class="skills-grid">
+      <article class="skill-card">
+        <div class="skill-card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="3"/>
+            <path d="M3 9h18"/>
+            <path d="M9 21V9"/>
+          </svg>
+        </div>
+        <h3>smart-ui-design</h3>
+        <p class="skill-desc">Guía de diseño UI inteligente basada en principios prácticos de diseño visual. Cubre jerarquía, tipografía, color, espaciado, profundidad y toques finales.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">ui</span>
+          <span class="skill-tag">diseño</span>
+          <span class="skill-tag">css</span>
+          <span class="skill-tag">frontend</span>
+          <span class="skill-tag">accesibilidad</span>
+        </div>
+        <div class="skill-card-footer">
+          <a href="./smart-ui-design.md" class="install">Ver skill →</a>
+          <span class="badge">disponible</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="install-section">
+      <h2>Instalación</h2>
+      <p>Clona el repositorio o instala skills individualmente en tu agente.</p>
+      <div class="code-block">
+        <span class="cmd">git clone</span> <span class="arg">https://github.com/ericmtzmtz/SkillsNextechsolutions.git</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer container">
+    <p>Skills Nexus — <a href="https://github.com/ericmtzmtz/SkillsNextechsolutions" target="_blank" rel="noopener">GitHub</a></p>
+  </footer>
+
+</body>
+</html>
