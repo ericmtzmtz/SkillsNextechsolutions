@@ -42,6 +42,33 @@
       --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px rgba(0,0,0,0.04);
     }
 
+    [data-theme="dark"] {
+      --primary-50:  hsl(220, 40%, 12%);
+      --primary-100: hsl(220, 45%, 18%);
+      --primary-300: hsl(220, 55%, 50%);
+      --primary-500: hsl(220, 65%, 58%);
+      --primary-600: hsl(220, 70%, 65%);
+      --primary-700: hsl(220, 75%, 72%);
+
+      --gray-50:  hsl(220, 10%, 10%);
+      --gray-100: hsl(220, 8%, 14%);
+      --gray-200: hsl(220, 7%, 20%);
+      --gray-300: hsl(220, 5%, 40%);
+      --gray-400: hsl(220, 4%, 55%);
+      --gray-500: hsl(220, 5%, 62%);
+      --gray-600: hsl(220, 6%, 72%);
+      --gray-700: hsl(220, 7%, 82%);
+      --gray-800: hsl(220, 8%, 90%);
+      --gray-900: hsl(220, 8%, 95%);
+
+      --success-500: hsl(150, 50%, 52%);
+      --success-100: hsl(150, 25%, 18%);
+
+      --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.20);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.30), 0 2px 4px rgba(0,0,0,0.15);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.30), 0 4px 6px rgba(0,0,0,0.15);
+    }
+
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -128,7 +155,7 @@
 
     .btn-primary {
       background: var(--primary-500);
-      color: #fff;
+      color: var(--gray-50);
       box-shadow: var(--shadow-sm);
     }
 
@@ -138,13 +165,13 @@
     }
 
     .btn-secondary {
-      background: #fff;
+      background: var(--gray-50);
       color: var(--gray-700);
       border: 1px solid var(--gray-200);
     }
 
     .btn-secondary:hover {
-      background: var(--gray-50);
+      background: var(--gray-100);
       border-color: var(--gray-300);
     }
 
@@ -175,7 +202,7 @@
     }
 
     .skill-card {
-      background: #fff;
+      background: var(--gray-50);
       border: 1px solid var(--gray-200);
       border-radius: var(--radius-lg);
       padding: 32px;
@@ -262,13 +289,13 @@
       background: var(--gray-900);
       border-radius: var(--radius-xl);
       padding: 48px;
-      color: #fff;
+      color: var(--gray-50);
     }
 
     .install-section h2 {
       font-size: 24px;
       font-weight: 700;
-      color: #fff;
+      color: var(--gray-50);
       margin-bottom: 8px;
     }
 
@@ -288,6 +315,11 @@
       line-height: 1.7;
       overflow-x: auto;
       color: var(--gray-200);
+    }
+
+    [data-theme="dark"] .code-block {
+      background: hsl(220, 15%, 6%);
+      border-color: hsl(220, 10%, 18%);
     }
 
     .code-block .cmd {
@@ -325,6 +357,26 @@
       margin: 0;
     }
 
+    .theme-toggle {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      color: var(--gray-600);
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .theme-toggle:hover {
+      background: var(--gray-200);
+      border-color: var(--gray-300);
+    }
+
     @media (max-width: 600px) {
       .hero {
         padding: 64px 0 48px;
@@ -349,6 +401,8 @@
   </style>
 </head>
 <body>
+
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Cambiar tema">&#x1F319;</button>
 
   <header class="hero container">
     <div class="hero-badge">Open Agent Skills</div>
@@ -406,6 +460,30 @@
   <footer class="footer container">
     <p>Skills Nexus — <a href="https://github.com/ericmtzmtz/SkillsNextechsolutions" target="_blank" rel="noopener">GitHub</a></p>
   </footer>
+
+  <script>
+    (function() {
+      var html = document.documentElement;
+      var toggle = document.getElementById('themeToggle');
+      var icon = { dark: '\u2600\uFE0F', light: '\uD83C\uDF19' };
+
+      var saved = localStorage.getItem('theme');
+      var prefers = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      var theme = saved || prefers;
+
+      function apply(t) {
+        html.setAttribute('data-theme', t);
+        toggle.innerHTML = t === 'dark' ? icon.dark : icon.light;
+        localStorage.setItem('theme', t);
+      }
+
+      apply(theme);
+
+      toggle.addEventListener('click', function() {
+        apply(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    })();
+  </script>
 
 </body>
 </html>
