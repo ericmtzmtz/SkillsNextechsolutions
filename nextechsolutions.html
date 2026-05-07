@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexTech Solutions — Tecnología que impulsa tu negocio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  /* ──────────────────────────────────────────
+     DESIGN SYSTEM
+  ────────────────────────────────────────── */
+  :root {
+    --bg-900:   hsl(222, 28%, 6%);
+    --bg-800:   hsl(222, 24%, 9%);
+    --bg-700:   hsl(222, 20%, 13%);
+    --bg-600:   hsl(222, 18%, 17%);
+    --bg-500:   hsl(222, 16%, 22%);
+
+    --cyan-500: hsl(185, 90%, 50%);
+    --cyan-400: hsl(185, 85%, 62%);
+    --cyan-300: hsl(185, 80%, 74%);
+    --cyan-900: hsl(185, 60%, 12%);
+
+    --blue-500: hsl(215, 80%, 52%);
+    --blue-400: hsl(215, 75%, 65%);
+
+    --txt-100: hsl(220, 20%, 96%);
+    --txt-300: hsl(220, 15%, 72%);
+    --txt-500: hsl(220, 12%, 50%);
+    --txt-700: hsl(220, 10%, 32%);
+
+    --font-display: 'Syne', sans-serif;
+    --font-body:    'DM Sans', sans-serif;
+
+    --r-sm:  6px;
+    --r-md: 12px;
+    --r-lg: 20px;
+
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.6), 0 4px 8px rgba(0,0,0,0.3);
+    --shadow-glow: 0 0 40px rgba(0, 210, 220, 0.18);
+
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-900);
+    color: var(--txt-100);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ──────────────────────────────────────────
+     NOISE TEXTURE OVERLAY
+  ────────────────────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ──────────────────────────────────────────
+     GRID PATTERN BACKGROUND
+  ────────────────────────────────────────── */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(0,210,220,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,210,220,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* ──────────────────────────────────────────
+     NAV
+  ────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 48px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10, 12, 20, 0.7);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0,210,220,0.08);
+    transition: var(--transition);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    color: var(--txt-100);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--cyan-500), var(--blue-500));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-logo .logo-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .logo-dot { color: var(--cyan-500); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--txt-300);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: color var(--transition);
+  }
+
+  .nav-links a:hover { color: var(--txt-100); }
+
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--cyan-500);
+    color: var(--cyan-500) !important;
+    padding: 8px 20px;
+    border-radius: var(--r-sm);
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    transition: all var(--transition) !important;
+  }
+
+  .nav-cta:hover {
+    background: var(--cyan-500) !important;
+    color: var(--bg-900) !important;
+  }
+
+  /* ──────────────────────────────────────────
+     HERO
+  ────────────────────────────────────────── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 120px 48px 80px;
+    overflow: hidden;
+  }
+
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+
+  .hero-orb-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0,210,220,0.12) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+  }
+
+  .hero-orb-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(60,120,255,0.10) 0%, transparent 70%);
+    bottom: 0;
+    left: -150px;
+  }
+
+  .hero-content {
+    max-width: 720px;
+    position: relative;
+    z-index: 2;
+    animation: heroIn 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,210,220,0.08);
+    border: 1px solid rgba(0,210,220,0.2);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--cyan-400);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 32px;
+  }
+
+  .hero-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cyan-500);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--txt-100);
+    margin-bottom: 24px;
+  }
+
+  .hero-title .accent {
+    background: linear-gradient(135deg, var(--cyan-500), var(--blue-400));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--txt-300);
+    line-height: 1.65;
+    max-width: 520px;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, var(--cyan-500), hsl(200, 85%, 48%));
+    color: var(--bg-900);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: var(--r-sm);
+    text-decoration: none;
+    transition: all var(--transition);
+    box-shadow: 0 0 32px rgba(0,210,220,0.3);
+    letter-spacing: -0.01em;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 48px rgba(0,210,220,0.45);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: transparent;
+    color: var(--txt-300);
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: var(--r-sm);
+    text-decoration: none;
+    border: 1px solid var(--bg-500);
+    transition: all var(--transition);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--txt-500);
+    color: var(--txt-100);
+  }
+
+  .hero-stats {
+    position: absolute;
+    right: 48px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    z-index: 2;
+    animation: heroIn 0.9s 0.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  .stat-card {
+    background: var(--bg-800);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--r-md);
+    padding: 24px 28px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    min-width: 160px;
+    transition: transform var(--transition);
+  }
+
+  .stat-card:hover { transform: translateX(-4px); }
+
+  .stat-card .stat-num {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--cyan-400), var(--blue-400));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+  }
+
+  .stat-card .stat-lbl {
+    font-size: 12px;
+    color: var(--txt-500);
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* ──────────────────────────────────────────
+     SECTION COMMONS
+  ────────────────────────────────────────── */
+  section { padding: 96px 48px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cyan-500);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--txt-100);
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    font-size: 17px;
+    color: var(--txt-300);
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 540px;
+  }
+
+  .section-header { margin-bottom: 64px; }
+
+  /* ──────────────────────────────────────────
+     SERVICES
+  ────────────────────────────────────────── */
+  #services { background: var(--bg-800); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .service-card {
+    background: var(--bg-700);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: var(--r-lg);
+    padding: 36px;
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(0,210,220,0.06) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+
+  .service-card:hover {
+    border-color: rgba(0,210,220,0.2);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+  }
+
+  .service-card:hover::before { opacity: 1; }
+
+  .service-icon {
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, rgba(0,210,220,0.15), rgba(60,120,255,0.1));
+    border: 1px solid rgba(0,210,220,0.15);
+    border-radius: var(--r-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    font-size: 22px;
+  }
+
+  .service-card h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--txt-100);
+    margin-bottom: 12px;
+  }
+
+  .service-card p {
+    font-size: 15px;
+    color: var(--txt-300);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .service-tag {
+    display: inline-block;
+    margin-top: 24px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cyan-500);
+    opacity: 0.7;
+  }
+
+  /* ──────────────────────────────────────────
+     WHY US
+  ────────────────────────────────────────── */
+  #why {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+    align-items: center;
+  }
+
+  .why-visual {
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 500px;
+  }
+
+  .why-visual-inner {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-800);
+    border-radius: var(--r-lg);
+    border: 1px solid rgba(255,255,255,0.06);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 2px;
+    overflow: hidden;
+  }
+
+  .why-quad {
+    background: var(--bg-700);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 28px;
+    transition: background var(--transition);
+    position: relative;
+  }
+
+  .why-quad:hover { background: var(--bg-600); }
+
+  .why-quad .q-icon { font-size: 32px; }
+
+  .why-quad .q-val {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--cyan-400), var(--blue-400));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .why-quad .q-lbl {
+    font-size: 12px;
+    color: var(--txt-500);
+    text-align: center;
+    letter-spacing: 0.03em;
+  }
+
+  .why-corner-badge {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, var(--cyan-500), var(--blue-500));
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg-900);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.3;
+    box-shadow: 0 0 40px rgba(0,210,220,0.35);
+  }
+
+  .why-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-top: 40px;
+  }
+
+  .why-item {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .why-item-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background: rgba(0,210,220,0.1);
+    border: 1px solid rgba(0,210,220,0.15);
+    border-radius: var(--r-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-top: 2px;
+  }
+
+  .why-item h4 {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--txt-100);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .why-item p {
+    font-size: 14px;
+    color: var(--txt-300);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ──────────────────────────────────────────
+     TECH STACK
+  ────────────────────────────────────────── */
+  #tech {
+    background: var(--bg-800);
+    text-align: center;
+  }
+
+  #tech .section-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  #tech .section-sub { margin: 0 auto; }
+
+  .tech-scroll {
+    overflow: hidden;
+    position: relative;
+    margin: 0 -48px;
+  }
+
+  .tech-scroll::before,
+  .tech-scroll::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 120px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .tech-scroll::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg-800), transparent);
+  }
+
+  .tech-scroll::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg-800), transparent);
+  }
+
+  .tech-track {
+    display: flex;
+    gap: 16px;
+    animation: scrollLeft 28s linear infinite;
+    width: max-content;
+    padding: 8px 0;
+  }
+
+  @keyframes scrollLeft {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .tech-track:hover { animation-play-state: paused; }
+
+  .tech-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-700);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 100px;
+    padding: 10px 20px;
+    white-space: nowrap;
+    font-size: 14px;
+    color: var(--txt-300);
+    font-weight: 400;
+    transition: all var(--transition);
+  }
+
+  .tech-pill:hover {
+    border-color: rgba(0,210,220,0.2);
+    color: var(--txt-100);
+  }
+
+  .tech-pill span { font-size: 18px; }
+
+  /* ──────────────────────────────────────────
+     PROCESS
+  ────────────────────────────────────────── */
+  #process { }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+    margin-top: 64px;
+  }
+
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: calc(12.5% + 28px);
+    right: calc(12.5% + 28px);
+    height: 1px;
+    background: linear-gradient(to right,
+      var(--cyan-500), var(--blue-500),
+      var(--blue-500), transparent
+    );
+    opacity: 0.3;
+  }
+
+  .process-step {
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .step-num {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--bg-800);
+    border: 1px solid rgba(0,210,220,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--cyan-500);
+    position: relative;
+    z-index: 1;
+  }
+
+  .process-step h4 {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--txt-100);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .process-step p {
+    font-size: 14px;
+    color: var(--txt-300);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ──────────────────────────────────────────
+     TESTIMONIALS
+  ────────────────────────────────────────── */
+  #testimonials { background: var(--bg-800); }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .testi-card {
+    background: var(--bg-700);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: var(--r-lg);
+    padding: 32px;
+    transition: all var(--transition);
+  }
+
+  .testi-card:hover {
+    border-color: rgba(0,210,220,0.12);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .testi-stars {
+    color: var(--cyan-500);
+    font-size: 14px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+
+  .testi-text {
+    font-size: 15px;
+    color: var(--txt-300);
+    line-height: 1.7;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+
+  .testi-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .testi-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cyan-500), var(--blue-500));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--bg-900);
+    flex-shrink: 0;
+  }
+
+  .testi-name {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--txt-100);
+    letter-spacing: -0.01em;
+  }
+
+  .testi-role {
+    font-size: 12px;
+    color: var(--txt-500);
+  }
+
+  /* ──────────────────────────────────────────
+     CTA
+  ────────────────────────────────────────── */
+  #cta {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #cta .cta-orb {
+    position: absolute;
+    inset: -100px;
+    background: radial-gradient(ellipse at 50% 50%, rgba(0,210,220,0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  #cta .inner {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  #cta .section-title { margin-bottom: 16px; }
+
+  #cta .section-sub { margin: 0 auto 48px; text-align: center; }
+
+  .cta-form {
+    display: flex;
+    gap: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .cta-input {
+    flex: 1;
+    padding: 14px 20px;
+    background: var(--bg-800);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--r-sm);
+    color: var(--txt-100);
+    font-family: var(--font-body);
+    font-size: 15px;
+    outline: none;
+    transition: border-color var(--transition);
+  }
+
+  .cta-input::placeholder { color: var(--txt-500); }
+  .cta-input:focus { border-color: var(--cyan-500); }
+
+  /* ──────────────────────────────────────────
+     FOOTER
+  ────────────────────────────────────────── */
+  footer {
+    background: var(--bg-900);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 64px 48px 40px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 64px;
+  }
+
+  .footer-brand p {
+    font-size: 14px;
+    color: var(--txt-500);
+    line-height: 1.7;
+    margin: 16px 0 24px;
+    font-weight: 300;
+    max-width: 260px;
+  }
+
+  .footer-socials {
+    display: flex;
+    gap: 10px;
+  }
+
+  .social-btn {
+    width: 36px;
+    height: 36px;
+    background: var(--bg-800);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: var(--r-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--txt-500);
+    text-decoration: none;
+    font-size: 15px;
+    transition: all var(--transition);
+  }
+
+  .social-btn:hover {
+    border-color: rgba(0,210,220,0.3);
+    color: var(--cyan-400);
+  }
+
+  .footer-col h5 {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--txt-100);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col ul li + li { margin-top: 10px; }
+
+  .footer-col ul a {
+    font-size: 14px;
+    color: var(--txt-500);
+    text-decoration: none;
+    font-weight: 300;
+    transition: color var(--transition);
+  }
+
+  .footer-col ul a:hover { color: var(--txt-300); }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px;
+    color: var(--txt-700);
+  }
+
+  .footer-bottom a {
+    color: var(--txt-700);
+    text-decoration: none;
+  }
+
+  .footer-bottom a:hover { color: var(--txt-500); }
+
+  /* ──────────────────────────────────────────
+     SCROLL ANIMATIONS
+  ────────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ──────────────────────────────────────────
+     RESPONSIVE
+  ────────────────────────────────────────── */
+  @media (max-width: 1100px) {
+    .hero-stats { display: none; }
+    #why { grid-template-columns: 1fr; gap: 48px; }
+    .why-visual { max-width: 100%; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    section { padding: 72px 24px; }
+    #hero { padding: 100px 24px 72px; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .process-steps::before { display: none; }
+    footer { padding: 48px 24px 32px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  }
+
+  @media (max-width: 600px) {
+    .process-steps { grid-template-columns: 1fr; }
+    .cta-form { flex-direction: column; }
+    .hero-actions { flex-direction: column; align-items: flex-start; }
+    .services-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body class="grid-bg">
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 2L15.5 6V12L9 16L2.5 12V6L9 2Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M9 6L12 8V12L9 14L6 12V8L9 6Z" fill="white" opacity="0.6"/>
+      </svg>
+    </div>
+    Nex<span class="logo-dot">Tech</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#services">Servicios</a></li>
+    <li><a href="#why">Nosotros</a></li>
+    <li><a href="#process">Proceso</a></li>
+    <li><a href="#tech">Tecnologías</a></li>
+    <li><a href="#cta" class="nav-cta">Contactar</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="dot"></div>
+      Soluciones tecnológicas para México
+    </div>
+
+    <h1 class="hero-title">
+      Tecnología que<br>
+      <span class="accent">impulsa tu</span><br>
+      negocio
+    </h1>
+
+    <p class="hero-sub">
+      Desarrollamos software a medida, automatizamos procesos y construimos
+      infraestructura robusta para empresas que quieren escalar en la era digital.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary">
+        Hablar con un experto
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#services" class="btn-secondary">
+        Ver servicios
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3V13M8 13L4 9M8 13L12 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-num">+120</div>
+      <div class="stat-lbl">Proyectos entregados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">98%</div>
+      <div class="stat-lbl">Satisfacción del cliente</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">7+</div>
+      <div class="stat-lbl">Años de experiencia</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section id="services">
+  <div class="section-header reveal">
+    <p class="section-label">Servicios</p>
+    <h2 class="section-title">Lo que construimos</h2>
+    <p class="section-sub">Desde el concepto hasta la producción, cubrimos todo el ciclo de vida de tu solución tecnológica.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-icon">💻</div>
+      <h3>Desarrollo de Software</h3>
+      <p>Aplicaciones web y móviles a medida con arquitecturas modernas, escalables y mantenibles. Desde MVPs hasta sistemas enterprise.</p>
+      <span class="service-tag">Web · Mobile · API</span>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-icon">☁️</div>
+      <h3>Infraestructura Cloud</h3>
+      <p>Migración, diseño y operación de infraestructura en la nube. Alta disponibilidad, seguridad y costos optimizados.</p>
+      <span class="service-tag">AWS · GCP · Azure</span>
+    </div>
+
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-icon">🤖</div>
+      <h3>Automatización & IA</h3>
+      <p>Flujos de trabajo automatizados, chatbots inteligentes e integración de LLMs para potenciar las operaciones de tu empresa.</p>
+      <span class="service-tag">n8n · LLMs · RPA</span>
+    </div>
+
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-icon">🔗</div>
+      <h3>Integraciones & APIs</h3>
+      <p>Conectamos tus sistemas existentes con ERP, CRM, plataformas de pago y cualquier servicio de terceros mediante APIs robustas.</p>
+      <span class="service-tag">REST · GraphQL · Webhooks</span>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-icon">📊</div>
+      <h3>Business Intelligence</h3>
+      <p>Dashboards en tiempo real, pipelines de datos y reportes automatizados para tomar decisiones basadas en datos.</p>
+      <span class="service-tag">Analytics · Dashboards · ETL</span>
+    </div>
+
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-icon">🛡️</div>
+      <h3>Consultoría Técnica</h3>
+      <p>Auditorías de código, revisión de arquitectura y roadmaps tecnológicos para asegurar que tu stack sea sostenible a largo plazo.</p>
+      <span class="service-tag">Auditoría · Roadmap · CTO</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY US ── -->
+<section id="why" style="padding: 96px 48px;">
+  <div class="why-visual reveal">
+    <div class="why-visual-inner">
+      <div class="why-quad">
+        <div class="q-icon">🚀</div>
+        <div class="q-val">48h</div>
+        <div class="q-lbl">Primera respuesta</div>
+      </div>
+      <div class="why-quad">
+        <div class="q-icon">✅</div>
+        <div class="q-val">98%</div>
+        <div class="q-lbl">Entregas a tiempo</div>
+      </div>
+      <div class="why-quad">
+        <div class="q-icon">🌎</div>
+        <div class="q-val">12+</div>
+        <div class="q-lbl">Industrias atendidas</div>
+      </div>
+      <div class="why-quad">
+        <div class="q-icon">💬</div>
+        <div class="q-val">24/7</div>
+        <div class="q-lbl">Soporte post-entrega</div>
+      </div>
+    </div>
+    <div class="why-corner-badge">
+      Hecho<br>en MX 🇲🇽
+    </div>
+  </div>
+
+  <div>
+    <div class="reveal">
+      <p class="section-label">Por qué elegirnos</p>
+      <h2 class="section-title">Un equipo que<br>habla tu idioma</h2>
+      <p class="section-sub">No somos una agencia genérica. Somos un equipo técnico especializado que entiende los retos únicos del mercado mexicano.</p>
+    </div>
+
+    <ul class="why-list">
+      <li class="why-item reveal reveal-delay-1">
+        <div class="why-item-icon">⚡</div>
+        <div>
+          <h4>Delivery ágil, sin sorpresas</h4>
+          <p>Ciclos cortos, comunicación constante y métricas claras. Sabrás exactamente en qué está tu proyecto en todo momento.</p>
+        </div>
+      </li>
+      <li class="why-item reveal reveal-delay-2">
+        <div class="why-item-icon">🔧</div>
+        <div>
+          <h4>Stack moderno y sin vendor lock-in</h4>
+          <p>Usamos herramientas open source y estándares abiertos para que tu solución sea siempre tuya y portable.</p>
+        </div>
+      </li>
+      <li class="why-item reveal reveal-delay-3">
+        <div class="why-item-icon">📈</div>
+        <div>
+          <h4>Enfocados en resultados de negocio</h4>
+          <p>No escribimos código por escribir código. Cada línea tiene un propósito que impacta directamente tus métricas de negocio.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── PROCESS ── -->
+<section id="process">
+  <div class="section-header reveal" style="text-align:center">
+    <p class="section-label">Proceso</p>
+    <h2 class="section-title">Cómo trabajamos</h2>
+    <p class="section-sub" style="margin:0 auto">Un proceso predecible y transparente de principio a fin.</p>
+  </div>
+
+  <div class="process-steps">
+    <div class="process-step reveal reveal-delay-1">
+      <div class="step-num">01</div>
+      <h4>Discovery</h4>
+      <p>Entendemos a fondo tu negocio, objetivos y restricciones técnicas para definir el alcance correcto.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="step-num">02</div>
+      <h4>Diseño & Arquitectura</h4>
+      <p>Proponemos la arquitectura más adecuada, wireframes y roadmap de desarrollo con estimados reales.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <div class="step-num">03</div>
+      <h4>Desarrollo Ágil</h4>
+      <p>Sprints de 2 semanas con demos funcionales. Puedes ver el progreso y ajustar prioridades en cada ciclo.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-4">
+      <div class="step-num">04</div>
+      <h4>Lanzamiento & Soporte</h4>
+      <p>Desplegamos en producción con monitoreo activo y brindamos soporte continuo para asegurar la operación.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── TECH ── -->
+<section id="tech">
+  <div class="section-header reveal">
+    <p class="section-label">Stack tecnológico</p>
+    <h2 class="section-title">Herramientas del oficio</h2>
+    <p class="section-sub">Trabajamos con las tecnologías más robustas y demandadas del mercado.</p>
+  </div>
+
+  <div class="tech-scroll">
+    <div class="tech-track" id="techTrack">
+      <!-- items duplicados para loop continuo -->
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials">
+  <div class="section-header reveal">
+    <p class="section-label">Clientes</p>
+    <h2 class="section-title">Lo que dicen de nosotros</h2>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testi-card reveal reveal-delay-1">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"NexTech transformó por completo la operación de nuestra cadena de restaurantes. El sistema de pedidos que construyeron redujo los errores a cero y la automatización nos ahorra 40 horas de trabajo manual a la semana."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">RG</div>
+        <div>
+          <div class="testi-name">Ricardo Garza</div>
+          <div class="testi-role">CEO, Grupo Gastronómico GDL</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal reveal-delay-2">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Migrar nuestra infraestructura a la nube con ellos fue fluido. Cero downtime, costos reducidos en 35% y el equipo estuvo disponible en todo momento. Muy recomendados."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">ML</div>
+        <div>
+          <div class="testi-name">María López</div>
+          <div class="testi-role">CTO, FinTech Mérida</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal reveal-delay-3">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Desarrollaron nuestro dashboard de analítica en tiempo real en tiempo récord. La calidad del código es impecable y el equipo fue muy proactivo en sugerir mejoras que no habíamos contemplado."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AH</div>
+        <div>
+          <div class="testi-name">Alejandro Herrera</div>
+          <div class="testi-role">Director, Retail MX</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section id="cta">
+  <div class="cta-orb"></div>
+  <div class="inner reveal">
+    <p class="section-label" style="text-align:center">Empieza hoy</p>
+    <h2 class="section-title">¿Listo para llevar tu empresa al siguiente nivel?</h2>
+    <p class="section-sub">Cuéntanos tu proyecto. La primera consultoría es sin costo.</p>
+
+    <div class="cta-form">
+      <input class="cta-input" type="email" placeholder="tu@empresa.com">
+      <a href="mailto:hola@nextechsolutions.mx" class="btn-primary" style="white-space:nowrap">
+        Contactar ahora
+      </a>
+    </div>
+
+    <p style="font-size:13px; color:var(--txt-500); margin-top:16px;">
+      O escríbenos directamente a <a href="mailto:hola@nextechsolutions.mx" style="color:var(--cyan-500); text-decoration:none;">hola@nextechsolutions.mx</a>
+    </p>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="margin-bottom:0">
+        <div class="logo-icon">
+          <svg viewBox="0 0 18 18" fill="none"><path d="M9 2L15.5 6V12L9 16L2.5 12V6L9 2Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 6L12 8V12L9 14L6 12V8L9 6Z" fill="white" opacity="0.6"/></svg>
+        </div>
+        NexTech Solutions
+      </a>
+      <p>Tecnología de alto impacto para empresas mexicanas que buscan crecer con solidez en la era digital.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn" title="LinkedIn">in</a>
+        <a href="#" class="social-btn" title="Twitter">𝕏</a>
+        <a href="#" class="social-btn" title="GitHub">GH</a>
+        <a href="#" class="social-btn" title="WhatsApp">WA</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h5>Servicios</h5>
+      <ul>
+        <li><a href="#">Desarrollo Web</a></li>
+        <li><a href="#">Apps Móviles</a></li>
+        <li><a href="#">Cloud & DevOps</a></li>
+        <li><a href="#">Automatización IA</a></li>
+        <li><a href="#">Integraciones</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Empresa</h5>
+      <ul>
+        <li><a href="#">Nosotros</a></li>
+        <li><a href="#">Casos de éxito</a></li>
+        <li><a href="#">Blog técnico</a></li>
+        <li><a href="#">Únete al equipo</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Contacto</h5>
+      <ul>
+        <li><a href="mailto:hola@nextechsolutions.mx">hola@nextechsolutions.mx</a></li>
+        <li><a href="tel:+524491234567">+52 (449) 123-4567</a></li>
+        <li><a href="#">Aguascalientes, MX</a></li>
+        <li><a href="#">nextechsolutions.mx</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2025 NexTech Solutions S.A. de C.V. Todos los derechos reservados.</span>
+    <div style="display:flex; gap:24px;">
+      <a href="#">Privacidad</a>
+      <a href="#">Términos</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ── TECH PILLS ── */
+  const techs = [
+    { icon: '⚛️', name: 'React' },
+    { icon: '🟢', name: 'Node.js' },
+    { icon: '🐍', name: 'Python' },
+    { icon: '🐹', name: 'Go' },
+    { icon: '🐘', name: 'PostgreSQL' },
+    { icon: '🔴', name: 'Redis' },
+    { icon: '☁️', name: 'AWS' },
+    { icon: '🐳', name: 'Docker' },
+    { icon: '☸️', name: 'Kubernetes' },
+    { icon: '🔄', name: 'n8n' },
+    { icon: '🤖', name: 'OpenAI' },
+    { icon: '📦', name: 'Terraform' },
+    { icon: '🔷', name: 'TypeScript' },
+    { icon: '⚡', name: 'FastAPI' },
+    { icon: '🌿', name: 'MongoDB' },
+    { icon: '🔵', name: 'Traefik' },
+  ];
+
+  const track = document.getElementById('techTrack');
+  const doubled = [...techs, ...techs];
+  doubled.forEach(t => {
+    const pill = document.createElement('div');
+    pill.className = 'tech-pill';
+    pill.innerHTML = `<span>${t.icon}</span>${t.name}`;
+    track.appendChild(pill);
+  });
+
+  /* ── SCROLL REVEAL ── */
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+
+  /* ── NAV SCROLL STATE ── */
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) {
+      nav.style.borderBottomColor = 'rgba(0,210,220,0.12)';
+    } else {
+      nav.style.borderBottomColor = 'rgba(0,210,220,0.08)';
+    }
+  });
+</script>
+</body>
+</html>
