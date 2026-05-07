@@ -33,6 +33,7 @@ Guía condensada de diseño UI profesional. Aplicar en orden: primero estructura
 ### No diseñes demasiado
 - Diseña la versión MÁS SIMPLE que se puede construir y enviar
 - Si algo es "nice-to-have", diseñarlo después — build primero lo mínimo viable
+- **Be a pessimist**: no incluir en el diseño funcionalidades que no vas a construir ahora (ej. sección de adjuntos en un sistema de comentarios) — un feature incompleto que bloquea el ship es peor que un feature ausente
 - Itera en ciclos cortos: diseño → build → problemas reales → rediseño
 
 ### Sistemas desde el principio
@@ -91,6 +92,7 @@ Destructivo: NO siempre rojo/grande → si no es acción primaria, usar estilo s
 - NO: agregar margin mínimo hasta que "no se vea mal"
 - SÍ: partir de espacio generoso y recortar
 - "Un poco demasiado" en elemento individual = "justo suficiente" en UI completa
+- **Excepción deliberada**: dashboards de datos donde toda la info debe caber en pantalla pueden ser más compactos — pero como decisión explícita, nunca por defecto
 
 ### No llenes toda la pantalla
 - Si el contenido necesita 600px → usar 600px. No estirar a 1200px
@@ -113,6 +115,7 @@ Destructivo: NO siempre rojo/grande → si no es acción primaria, usar estilo s
 ### Espaciado relativo no escala
 - No usar `em` para todo — elementos fuera de contexto se ven roto
 - Preferir valores del sistema de espaciado sobre valores relativos
+- **En responsive**: los elementos grandes deben encoger más rápido que los pequeños; no usar relaciones estrictas (ej. `1.5em` para headline que deriva de un `body` fijo) — un botón grande en desktop no necesita el mismo padding proporcional en móvil
 
 ### Evitar espaciado ambiguo
 - Espacio entre elementos relacionados DEBE ser menor que entre grupos distintos
@@ -243,6 +246,7 @@ UI elements: 3:1
 - Luz viene de ARRIBA en interfaces modernas
 - Elementos elevados: sombra abajo/normal
 - Elementos inset (inputs, wells): sombra hacia adentro arriba
+- **Truco fino**: reforzar la ilusión con un `border-top` o `inset shadow` superior en color más claro en elementos elevados (como si la luz los rozara por arriba); en elementos inset, el borde superior más oscuro y el inferior más claro — funciona incluso sin `box-shadow`
 
 ### Sombras y elevación
 ```
@@ -294,6 +298,7 @@ Ejemplo:
 - Avatar 32px: no mostrar avatar de 1000px
 - Definir contenedores con aspect-ratio fijos
 - `object-fit: cover` para imágenes en contenedores fijos
+- **Íconos**: no escalar un ícono de 16-24px a 48px+ — se ve chunky y pixelado; en su lugar, encerrar el ícono en su tamaño original dentro de un círculo o rectángulo con background de color → el ícono se mantiene nítido y el conjunto ocupa el espacio deseado
 
 ### Contenido de usuarios
 - Usuario puede subir imagen muy pequeña, muy grande, portrait, landscape
